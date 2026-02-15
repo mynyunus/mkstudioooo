@@ -641,6 +641,12 @@ section[id] {
   font-size: 0.95rem;
 }
 
+.footer-attribution {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  opacity: 0.9;
+}
+
 .whatsapp-fab,
 .back-to-top {
   position: fixed;
@@ -662,6 +668,12 @@ section[id] {
   bottom: 0.95rem;
   background: var(--accent);
   color: #fff;
+}
+
+.whatsapp-fab svg {
+  width: 26px;
+  height: 26px;
+  fill: currentColor;
 }
 
 .back-to-top {
