@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollUI();
   initMobileMenu();
   initRevealObserver(isLiteMode);
+  initStudioSignatureSlider();
   initShowcaseTabs();
   initInstagramFallbacks(isLiteMode);
 });
@@ -191,6 +192,86 @@ function initRevealObserver(isLiteMode) {
   );
 
   items.forEach((item) => observer.observe(item));
+}
+
+function initStudioSignatureSlider() {
+  const slider = document.querySelector("[data-signature-slider]");
+  if (!slider) return;
+
+  const slides = Array.from(slider.querySelectorAll("[data-slide]"));
+  const dots = Array.from(slider.querySelectorAll("[data-slide-dot]"));
+  const prevBtn = slider.querySelector("[data-slide-prev]");
+  const nextBtn = slider.querySelector("[data-slide-next]");
+  if (!slides.length) return;
+
+  let activeIndex = 0;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let autoplayId = null;
+
+  const setActive = (index) => {
+    activeIndex = (index + slides.length) % slides.length;
+    slides.forEach((slide, i) => {
+      const isActive = i === activeIndex;
+      slide.classList.toggle("is-active", isActive);
+      slide.setAttribute("aria-hidden", String(!isActive));
+    });
+
+    dots.forEach((dot, i) => {
+      const isActive = i === activeIndex;
+      dot.classList.toggle("is-active", isActive);
+      dot.setAttribute("aria-current", isActive ? "true" : "false");
+    });
+  };
+
+  const stopAutoplay = () => {
+    if (!autoplayId) return;
+    clearInterval(autoplayId);
+    autoplayId = null;
+  };
+
+  const startAutoplay = () => {
+    if (reducedMotion || slides.length < 2 || autoplayId) return;
+    autoplayId = setInterval(() => {
+      setActive(activeIndex + 1);
+    }, 4200);
+  };
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      setActive(activeIndex - 1);
+      stopAutoplay();
+      startAutoplay();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      setActive(activeIndex + 1);
+      stopAutoplay();
+      startAutoplay();
+    });
+  }
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      setActive(index);
+      stopAutoplay();
+      startAutoplay();
+    });
+  });
+
+  slider.addEventListener("mouseenter", stopAutoplay);
+  slider.addEventListener("mouseleave", startAutoplay);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopAutoplay();
+      return;
+    }
+    startAutoplay();
+  });
+
+  setActive(0);
+  startAutoplay();
 }
 
 function initShowcaseTabs() {

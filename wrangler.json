@@ -6,6 +6,6 @@
     "directory": "./public"
   },
   "build": {
-    "command": "rm -rf public && mkdir -p public/assets && cp index.html styles.css script.js public/ && cp assets/*.mp4 public/assets/"
+    "command": "rm -rf public && mkdir -p public/assets && cp index.html styles.css script.js public/ && cp assets/*.mp4 public/assets/ && cp assets/*.jpg public/assets/ && cp assets/*.png public/assets/"
   }
 }
