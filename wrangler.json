@@ -1,0 +1,11 @@
+{
+  "name": "mkstudioooo",
+  "compatibility_date": "2024-09-23",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./public"
+  },
+  "build": {
+    "command": "mkdir -p public && cp index.html styles.css script.js public/ && mkdir -p public/assets && cp -R assets/. public/assets/"
+  }
+}
